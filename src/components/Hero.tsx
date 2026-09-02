@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import {
   motion,
   useScroll,
@@ -59,6 +59,45 @@ function Float({
   );
 }
 
+function AvatarsCard() {
+  const t = useTranslations('hero');
+  return (
+    <div className="flex items-center rounded-xl border border-line bg-surface px-3.5 py-2.5 shadow-xl">
+      <div className="flex">
+        {['EK', 'AY', 'ZD'].map((ini, i) => (
+          <span
+            key={ini}
+            className={`flex h-6 w-6 items-center justify-center rounded-full border-2 border-surface font-display text-[9px] font-semibold text-muted ${
+              i % 2 ? 'bg-line' : 'bg-elevated'
+            } ${i ? '-ml-1.5' : ''}`}
+          >
+            {ini}
+          </span>
+        ))}
+      </div>
+      <span className="tabular ml-2 text-[12px] text-muted">{t('cardDone')}</span>
+    </div>
+  );
+}
+
+function StakeCard() {
+  const t = useTranslations('hero');
+  return (
+    <div className="rounded-xl bg-ember-soft px-3.5 py-2.5 text-[13px] shadow-xl">
+      🎯 {t('stake')}
+    </div>
+  );
+}
+
+function BubbleCard() {
+  const t = useTranslations('hero');
+  return (
+    <div className="rounded-xl border border-line bg-surface px-3.5 py-2.5 text-[12.5px] text-faint shadow-xl">
+      {t('bubbleDone')} <span className="text-ember">✓</span>
+    </div>
+  );
+}
+
 export default function Hero() {
   const t = useTranslations('hero');
   const ref = useRef<HTMLElement>(null);
@@ -66,6 +105,21 @@ export default function Hero() {
     target: ref,
     offset: ['start start', 'end start'],
   });
+
+  // Ring composition: measure available width so the art can never push the
+  // page sideways; the SVG gets exactly `side` px.
+  const compRef = useRef<HTMLDivElement>(null);
+  const [side, setSide] = useState(380);
+  useEffect(() => {
+    const el = compRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([entry]) => {
+      const w = Math.floor(entry.contentRect.width);
+      setSide(Math.max(230, Math.min(380, w)));
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   // On scroll away: copy rises, the ring sinks, shrinks and rotates.
   const yCopy = useTransform(scrollYProgress, [0, 1], [0, -90]);
@@ -86,7 +140,7 @@ export default function Hero() {
     <section ref={ref} className="relative overflow-hidden">
       <motion.div
         style={{ opacity: opacityHero }}
-        className="mx-auto grid min-h-svh w-full max-w-6xl grid-cols-1 items-center gap-14 px-6 pb-24 pt-32 lg:grid-cols-2 lg:gap-8 lg:pt-24"
+        className="mx-auto grid min-h-svh w-full max-w-6xl grid-cols-1 items-center gap-12 px-6 pb-16 pt-28 sm:pt-32 lg:grid-cols-2 lg:gap-8 lg:pb-24"
       >
         {/* Copy */}
         <motion.div
@@ -104,7 +158,7 @@ export default function Hero() {
           </motion.p>
           <motion.h1
             variants={item}
-            className="font-display text-[40px] font-semibold leading-[1.1] tracking-[-0.02em] sm:text-6xl"
+            className="font-display text-[clamp(34px,8.5vw,60px)] font-semibold leading-[1.1] tracking-[-0.02em]"
           >
             {t('titleA')}
             <br />
@@ -114,7 +168,7 @@ export default function Hero() {
           </motion.h1>
           <motion.p
             variants={item}
-            className="mt-6 max-w-md text-[17px] leading-relaxed text-muted"
+            className="mt-6 max-w-md text-[16px] leading-relaxed text-muted sm:text-[17px]"
           >
             {t('sub')}
           </motion.p>
@@ -132,30 +186,34 @@ export default function Hero() {
           </motion.p>
         </motion.div>
 
-        {/* Ring composition */}
+        {/* Ring composition — measured, never wider than its column */}
         <motion.div
+          ref={compRef}
           style={{ y: yRing, scale: scaleRing, rotate: rotateRing }}
-          className="relative z-0 mx-auto"
+          className="relative z-0 w-full max-w-[420px] justify-self-center lg:max-w-none"
         >
-          <div className="relative scale-[0.62] sm:scale-90 xl:scale-100">
+          <div className="fit-box" style={{ width: side, height: side }}>
             <div className="absolute inset-0 -z-10 scale-110 rounded-full bg-ember/10 blur-3xl" />
             <StaticRing
               states={states}
-              size={380}
-              stroke={16}
+              size={side}
+              stroke={Math.max(10, side * 0.042)}
               gap={3}
               staggerIn
               className="drop-shadow-[0_0_60px_rgba(255,107,71,0.15)]"
             />
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="tabular font-display text-5xl font-bold tracking-[-0.02em]">
+              <span className="tabular font-display text-[clamp(28px,7vw,48px)] font-bold tracking-[-0.02em]">
                 7/14
               </span>
-              <span className="mt-1 text-[15px] text-faint">{t('dayLabel')}</span>
+              <span className="mt-1 text-[14px] text-faint sm:text-[15px]">
+                {t('dayLabel')}
+              </span>
             </div>
 
-            <Float className="-left-28 top-8 hidden md:block" parallax={yA} delay={0}>
-              <div className="w-[196px] -rotate-3 rounded-2xl border border-line bg-surface p-4 shadow-xl">
+            {/* Floating cards only where there is room around the ring */}
+            <Float className="-left-24 top-6 hidden sm:block xl:-left-28" parallax={yA} delay={0}>
+              <div className="w-[180px] -rotate-3 rounded-2xl border border-line bg-surface p-4 shadow-xl xl:w-[196px]">
                 <p className="text-[12px] text-muted">{t('cardTitle')}</p>
                 <p className="mt-1 text-[14.5px] font-medium leading-snug">
                   {t('cardAction')}
@@ -167,38 +225,36 @@ export default function Hero() {
               </div>
             </Float>
 
-            <Float className="-right-16 top-2 md:-right-24" parallax={yB} delay={0.6}>
-              <div className="flex rotate-2 items-center rounded-xl border border-line bg-surface px-3.5 py-2.5 shadow-xl">
-                <div className="flex">
-                  {['EK', 'AY', 'ZD'].map((ini, i) => (
-                    <span
-                      key={ini}
-                      className={`flex h-6 w-6 items-center justify-center rounded-full border-2 border-surface font-display text-[9px] font-semibold text-muted ${
-                        i % 2 ? 'bg-line' : 'bg-elevated'
-                      } ${i ? '-ml-1.5' : ''}`}
-                    >
-                      {ini}
-                    </span>
-                  ))}
-                </div>
-                <span className="tabular ml-2 text-[12px] text-muted">
-                  {t('cardDone')}
-                </span>
+            <Float className="-right-6 top-2 hidden sm:block md:-right-16 lg:-right-20" parallax={yB} delay={0.6}>
+              <div className="rotate-2">
+                <AvatarsCard />
               </div>
             </Float>
 
-            <Float className="-right-14 bottom-14 md:-right-28" parallax={yC} delay={1.1}>
-              <div className="rotate-3 rounded-xl bg-ember-soft px-3.5 py-2.5 text-[13px] shadow-xl">
-                🎯 {t('stake')}
+            <Float className="-right-4 bottom-12 hidden sm:block md:-right-14 lg:-right-24" parallax={yC} delay={1.1}>
+              <div className="rotate-3">
+                <StakeCard />
               </div>
             </Float>
 
-            <Float className="-left-10 bottom-4 md:-left-20" parallax={yD} delay={1.6}>
-              <div className="rotate-2 rounded-xl border border-line bg-surface px-3.5 py-2.5 text-[12.5px] text-faint shadow-xl">
-                {t('bubbleDone')} <span className="text-ember">✓</span>
+            <Float className="-left-4 bottom-2 hidden sm:block md:-left-12 lg:-left-20" parallax={yD} delay={1.6}>
+              <div className="rotate-2">
+                <BubbleCard />
               </div>
             </Float>
           </div>
+
+          {/* On phones the cards drop below the ring as a small orbit strip */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.1, duration: 0.6, ease: EASE }}
+            className="mt-8 flex flex-wrap items-center justify-center gap-2.5 sm:hidden"
+          >
+            <AvatarsCard />
+            <StakeCard />
+            <BubbleCard />
+          </motion.div>
         </motion.div>
       </motion.div>
     </section>

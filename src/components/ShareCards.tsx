@@ -82,7 +82,9 @@ function Rays() {
 
 /**
  * Share cards: every finished ring turns into a shareable story card. Four
- * variants ride a pinned, vertically-driven horizontal scroll.
+ * variants ride a pinned, vertically-driven horizontal scroll. The cards use
+ * a shared aspect class (never `grow`) so the strip's scrollWidth — and thus
+ * the travel distance — is always real.
  */
 export default function ShareCards() {
   const t = useTranslations('share');
@@ -95,7 +97,8 @@ export default function ShareCards() {
   useEffect(() => {
     const measure = () => {
       if (!stripRef.current) return;
-      setDist(Math.max(0, stripRef.current.scrollWidth - window.innerWidth + 96));
+      const over = stripRef.current.scrollWidth - window.innerWidth;
+      setDist(Math.max(0, over + 48));
     };
     measure();
     window.addEventListener('resize', measure);
@@ -106,26 +109,27 @@ export default function ShareCards() {
     target: sectionRef,
     offset: ['start start', 'end end'],
   });
-  const x = useTransform(scrollYProgress, [0.03, 0.97], [0, -dist]);
+  const x = useTransform(scrollYProgress, [0.04, 0.96], [0, -dist]);
 
+  // Cards are as tall as the scene allows, width follows the 9:16 story ratio.
   const card =
-    'relative flex aspect-[9/16] w-[272px] shrink-0 flex-col overflow-hidden rounded-[2rem] border border-line sm:w-[310px]';
+    'relative flex aspect-[9/16] h-[min(62svh,540px)] shrink-0 flex-col overflow-hidden rounded-[1.75rem] border border-line sm:h-[min(64svh,580px)]';
 
   return (
     <section
       ref={sectionRef}
-      style={{ height: `calc(100vh + ${Math.max(dist, 400)}px)` }}
+      style={{ height: `calc(100svh + ${Math.max(dist, 320)}px)` }}
       className="relative"
     >
       <div className="sticky top-0 flex h-svh flex-col justify-center overflow-hidden">
-        <div className="mx-auto mb-10 w-full max-w-6xl px-6">
-          <span className="mb-5 inline-block rounded-xl bg-ember-soft px-3.5 py-2 font-display text-[13px] font-semibold text-ember">
+        <div className="mx-auto mb-6 w-full max-w-6xl px-6 sm:mb-10">
+          <span className="mb-4 inline-block rounded-xl bg-ember-soft px-3.5 py-2 font-display text-[13px] font-semibold text-ember">
             {t('chip')}
           </span>
-          <h2 className="font-display text-3xl font-semibold leading-[1.15] tracking-[-0.02em] sm:text-5xl">
+          <h2 className="font-display text-[clamp(26px,5vw,48px)] font-semibold leading-[1.15] tracking-[-0.02em]">
             {t('title')}
           </h2>
-          <p className="mt-3 max-w-lg text-[15px] leading-relaxed text-muted sm:text-[17px]">
+          <p className="mt-2 max-w-lg text-[14px] leading-relaxed text-muted sm:mt-3 sm:text-[17px]">
             {t('sub')}
           </p>
         </div>
@@ -133,27 +137,27 @@ export default function ShareCards() {
         <motion.div
           ref={stripRef}
           style={{ x }}
-          className="mask-fade-x flex w-max items-stretch gap-5 pl-6 sm:gap-8"
+          className="mask-fade-x flex w-max items-stretch gap-4 px-6 sm:gap-7"
         >
           {/* A — Classic: logo, ring, 2×2 stat grid */}
-          <div className={`${card} -rotate-2 bg-gradient-to-b from-[#101116] to-bg p-6`}>
+          <div className={`${card} -rotate-2 bg-gradient-to-b from-[#101116] to-bg p-5 sm:p-6`}>
             <div className="flex items-center gap-2">
               <RingMark size={20} />
               <span className="font-display text-[13px] font-semibold">halkora</span>
             </div>
-            <p className="mt-6 font-display text-[22px] font-semibold leading-tight tracking-[-0.02em]">
+            <p className="mt-4 font-display text-[19px] font-semibold leading-tight tracking-[-0.02em] sm:text-[22px]">
               {t('cardTitle')}
             </p>
-            <p className="mt-1 text-[13px] text-muted">{t('completed')}</p>
-            <div className="relative mx-auto my-auto py-5">
+            <p className="mt-1 text-[12px] text-muted sm:text-[13px]">{t('completed')}</p>
+            <div className="relative mx-auto my-auto py-4">
               <StaticRing
                 states={buildStates(14, 14)}
-                size={120}
-                stroke={10}
+                size={110}
+                stroke={9}
                 gap={3}
                 pulse={false}
               />
-              <span className="tabular absolute inset-0 flex items-center justify-center font-display text-xl font-bold">
+              <span className="tabular absolute inset-0 flex items-center justify-center font-display text-lg font-bold">
                 14/14
               </span>
             </div>
@@ -170,27 +174,27 @@ export default function ShareCards() {
           </div>
 
           {/* B — Typographic: giant number, name list */}
-          <div className={`${card} rotate-1 bg-gradient-to-b from-[#101116] to-bg p-6`}>
-            <p className="tabular font-display text-[120px] font-bold leading-none tracking-[-0.04em]">
+          <div className={`${card} rotate-1 bg-gradient-to-b from-[#101116] to-bg p-5 sm:p-6`}>
+            <p className="tabular font-display text-[clamp(84px,18vw,120px)] font-bold leading-none tracking-[-0.04em]">
               14
             </p>
-            <p className="mt-1 font-display text-[20px] font-semibold tracking-[-0.02em]">
+            <p className="mt-1 font-display text-[18px] font-semibold tracking-[-0.02em] sm:text-[20px]">
               {t('together')}
             </p>
-            <p className="mt-1 text-[13px] text-muted">{t('cardTitle')}</p>
-            <div className="my-5 h-px bg-line" />
+            <p className="mt-1 text-[12px] text-muted sm:text-[13px]">{t('cardTitle')}</p>
+            <div className="my-4 h-px bg-line sm:my-5" />
             <div className="space-y-1.5">
               {names.map((n, i) => (
                 <p
                   key={n}
-                  className={`text-[14px] ${i === names.length - 1 ? 'text-faint' : 'text-muted'}`}
+                  className={`text-[13px] sm:text-[14px] ${i === names.length - 1 ? 'text-faint' : 'text-muted'}`}
                 >
                   {n}
                 </p>
               ))}
             </div>
             <div className="mt-auto">
-              <p className="tabular mb-4 text-[12px] text-faint">
+              <p className="tabular mb-3 text-[11px] text-faint sm:mb-4 sm:text-[12px]">
                 {t('days')} · {t('people')} · {t('checkins')} ·{' '}
                 <span className="text-ember">{t('rate')}</span>
               </p>
@@ -200,30 +204,30 @@ export default function ShareCards() {
 
           {/* C — Ember band header, big ring */}
           <div className={`${card} -rotate-1 bg-gradient-to-b from-[#101116] to-bg`}>
-            <div className="flex items-center justify-center gap-2 bg-ember py-3.5">
-              <span className="font-display text-[14px] font-bold text-bg">
+            <div className="flex items-center justify-center gap-2 bg-ember py-3 sm:py-3.5">
+              <span className="font-display text-[13px] font-bold text-bg sm:text-[14px]">
                 {t('completed')}
               </span>
             </div>
-            <div className="flex flex-1 flex-col p-6">
-              <p className="font-display text-[20px] font-semibold leading-tight tracking-[-0.02em]">
+            <div className="flex flex-1 flex-col p-5 sm:p-6">
+              <p className="font-display text-[18px] font-semibold leading-tight tracking-[-0.02em] sm:text-[20px]">
                 <span className="mr-1.5 text-ember">✓</span>
                 {t('cardTitle')}
               </p>
-              <div className="relative mx-auto my-auto py-4">
+              <div className="relative mx-auto my-auto py-3">
                 <StaticRing
                   states={buildStates(14, 14)}
-                  size={150}
-                  stroke={12}
+                  size={140}
+                  stroke={11}
                   gap={3}
                   pulse={false}
                   className="drop-shadow-[0_0_40px_rgba(255,107,71,0.25)]"
                 />
-                <span className="tabular absolute inset-0 flex items-center justify-center font-display text-2xl font-bold">
+                <span className="tabular absolute inset-0 flex items-center justify-center font-display text-xl font-bold">
                   14/14
                 </span>
               </div>
-              <p className="tabular mb-4 text-center text-[12px] text-faint">
+              <p className="tabular mb-3 text-center text-[11px] text-faint sm:mb-4 sm:text-[12px]">
                 {t('days')} · {t('people')} · {t('checkins')}
               </p>
               <div className="flex items-center justify-between">
@@ -234,30 +238,30 @@ export default function ShareCards() {
           </div>
 
           {/* D — Rays */}
-          <div className={`${card} rotate-2 bg-gradient-to-b from-[#101116] to-bg p-6`}>
-            <p className="text-center font-display text-[20px] font-semibold leading-tight tracking-[-0.02em]">
+          <div className={`${card} rotate-2 bg-gradient-to-b from-[#101116] to-bg p-5 sm:p-6`}>
+            <p className="text-center font-display text-[18px] font-semibold leading-tight tracking-[-0.02em] sm:text-[20px]">
               {t('cardTitle')}
             </p>
-            <p className="mt-1 text-center text-[13px] text-muted">{t('completed')}</p>
-            <div className="relative mx-auto my-auto flex items-center justify-center py-4">
+            <p className="mt-1 text-center text-[12px] text-muted sm:text-[13px]">{t('completed')}</p>
+            <div className="relative mx-auto my-auto flex items-center justify-center py-3">
               <Rays />
               <div className="relative">
                 <StaticRing
                   states={buildStates(14, 14)}
-                  size={130}
-                  stroke={11}
+                  size={120}
+                  stroke={10}
                   gap={3}
                   pulse={false}
                 />
-                <span className="tabular absolute inset-0 flex items-center justify-center font-display text-[22px] font-bold">
+                <span className="tabular absolute inset-0 flex items-center justify-center font-display text-xl font-bold">
                   14/14
                 </span>
               </div>
             </div>
-            <p className="mb-1.5 text-center font-display text-[14px] font-semibold text-joker">
+            <p className="mb-1.5 text-center font-display text-[13px] font-semibold text-joker sm:text-[14px]">
               {t('perfect')}
             </p>
-            <p className="tabular mb-4 text-center text-[12px] text-faint">
+            <p className="tabular mb-3 text-center text-[11px] text-faint sm:mb-4 sm:text-[12px]">
               {t('days')} · {t('people')} · {t('checkins')} · {t('rate')}
             </p>
             <Watermark />

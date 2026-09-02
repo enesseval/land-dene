@@ -51,10 +51,10 @@ export default function Widgets() {
           {t('chip')}
         </span>
       </div>
-      <h2 className="max-w-2xl font-display text-3xl font-semibold leading-[1.15] tracking-[-0.02em] sm:text-5xl">
+      <h2 className="max-w-2xl font-display text-[clamp(26px,5vw,48px)] font-semibold leading-[1.15] tracking-[-0.02em]">
         {t('title')}
       </h2>
-      <p className="mt-4 max-w-xl text-[17px] leading-relaxed text-muted">{t('sub')}</p>
+      <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-muted sm:text-[17px]">{t('sub')}</p>
 
       <div className="mt-14 grid items-center gap-12 md:grid-cols-5">
         {/* Home screen panel */}
@@ -110,11 +110,11 @@ export default function Widgets() {
               transition={{ type: 'spring', bounce: 0.28, duration: 0.85, delay: 0.4 }}
               className="col-span-4 rounded-3xl border border-line bg-surface p-4"
             >
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3.5">
                 <div className="relative shrink-0">
                   <StaticRing
                     states={buildStates(21, 10, { joker: 6, today: 10 })}
-                    size={76}
+                    size={68}
                     stroke={7}
                     gap={4}
                   />
@@ -133,9 +133,9 @@ export default function Widgets() {
                     <span className="tabular text-joker">● {t('mediumJoker')}</span>
                   </div>
                 </div>
-                <div className="shrink-0 rounded-full bg-ember px-4 py-2 text-[12px] font-bold text-bg">
-                  {t('checkin')}
-                </div>
+              </div>
+              <div className="mt-3 rounded-full bg-ember py-2 text-center text-[12px] font-bold text-bg">
+                {t('checkin')}
               </div>
             </motion.div>
 

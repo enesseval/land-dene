@@ -22,6 +22,8 @@
 
   --animate-ring-pulse: ring-pulse 2s ease-in-out infinite;
   --animate-rotate-slow: rotate-slow 80s linear infinite;
+  --animate-marquee-l: marquee-l 46s linear infinite;
+  --animate-marquee-r: marquee-r 46s linear infinite;
 
   @keyframes ring-pulse {
     0%,
@@ -36,6 +38,23 @@
   @keyframes rotate-slow {
     to {
       transform: rotate(360deg);
+    }
+  }
+
+  /* Marquee tracks translate by exactly half their width (content is
+     duplicated once) so the loop is seamless and speed is constant. */
+  @keyframes marquee-l {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes marquee-r {
+    from {
+      transform: translateX(-50%);
+    }
+    to {
+      transform: translateX(0);
     }
   }
 }
@@ -71,20 +90,28 @@ body {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Soft fade on the left/right edges of the marquee strips */
+/* Soft fade on the left/right edges of scrolling strips */
 .mask-fade-x {
   mask-image: linear-gradient(
     to right,
     transparent,
-    black 10%,
-    black 90%,
+    black 8%,
+    black 92%,
     transparent
   );
   -webkit-mask-image: linear-gradient(
     to right,
     transparent,
-    black 10%,
-    black 90%,
+    black 8%,
+    black 92%,
     transparent
   );
+}
+
+/* A composition that must never force the page wider than the viewport:
+   it takes the width the caller computed and centers the (scaled) art. */
+.fit-box {
+  position: relative;
+  margin-inline: auto;
+  overflow: visible;
 }

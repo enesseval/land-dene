@@ -89,7 +89,7 @@ export default function Features() {
         </span>
         <div className="h-px flex-1 bg-line" />
       </div>
-      <h2 className="mb-16 max-w-2xl font-display text-3xl font-semibold leading-[1.15] tracking-[-0.02em] sm:text-5xl">
+      <h2 className="mb-10 max-w-2xl font-display text-[clamp(26px,5vw,48px)] font-semibold leading-[1.15] tracking-[-0.02em] sm:mb-16">
         {t('title')}
       </h2>
 

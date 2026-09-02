@@ -22,15 +22,7 @@ function Fade({ className, children }: { className?: string; children: ReactNode
 }
 
 /** iOS-style notification banner that drops in from the top edge. */
-function Banner({
-  time,
-  title,
-  body,
-}: {
-  time: string;
-  title: string;
-  body: string;
-}) {
+function Banner({ time, title, body }: { time: string; title: string; body: string }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: -56, scale: 0.95 }}
@@ -51,44 +43,66 @@ function Banner({
 }
 
 /**
- * "A real evening" — the narrative beat. Evening reminder first, the friend's
- * wave second; two notification types the app actually sends, told as one
- * small story.
+ * "A real evening" — the narrative beat. A dimmed full-screen scene with a
+ * soft ember moon-glow; two notification types the app actually sends, told
+ * as one small story.
  */
 export default function Story() {
   const t = useTranslations('story');
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start end', 'end start'],
+  });
+
+  // The scene dims and the moon-glow warms as the viewer enters the evening.
+  const dim = useTransform(scrollYProgress, [0, 0.35, 0.65, 1], [0, 1, 1, 0]);
+  const moon = useTransform(scrollYProgress, [0.1, 0.5, 0.9], [0, 1, 0]);
 
   return (
-    <section className="mx-auto max-w-2xl px-6 py-32 sm:py-44">
-      <Fade className="mb-12">
-        <span className="rounded-xl bg-ember-soft px-3.5 py-2 font-display text-[13px] font-semibold text-ember">
-          {t('chip')}
-        </span>
-      </Fade>
+    <section ref={ref} className="relative">
+      <motion.div
+        style={{ opacity: dim }}
+        className="pointer-events-none absolute inset-0 bg-abyss"
+        aria-hidden="true"
+      />
+      <motion.div
+        style={{ opacity: moon }}
+        className="pointer-events-none absolute right-[8%] top-[12%] h-40 w-40 rounded-full bg-ember/15 blur-3xl sm:h-56 sm:w-56"
+        aria-hidden="true"
+      />
 
-      <div className="flex flex-col gap-7 font-display text-[26px] font-semibold leading-[1.25] tracking-[-0.02em] sm:text-4xl">
-        <Fade>
-          <p>{t('l1')}</p>
+      <div className="relative mx-auto flex min-h-[92svh] max-w-2xl flex-col justify-center px-6 py-32 sm:py-44">
+        <Fade className="mb-12">
+          <span className="rounded-xl bg-ember-soft px-3.5 py-2 font-display text-[13px] font-semibold text-ember">
+            {t('chip')}
+          </span>
         </Fade>
 
-        <div className="my-2">
-          <Banner time={t('rTime')} title={t('rTitle')} body={t('rBody')} />
+        <div className="flex flex-col gap-7 font-display text-[clamp(22px,5.4vw,36px)] font-semibold leading-[1.25] tracking-[-0.02em]">
+          <Fade>
+            <p>{t('l1')}</p>
+          </Fade>
+
+          <div className="my-2">
+            <Banner time={t('rTime')} title={t('rTitle')} body={t('rBody')} />
+          </div>
+
+          <Fade>
+            <p>{t('l2')}</p>
+          </Fade>
+          <Fade>
+            <p>{t('l3')}</p>
+          </Fade>
+
+          <div className="my-2">
+            <Banner time={t('wTime')} title={t('wTitle')} body={t('wBody')} />
+          </div>
+
+          <Fade>
+            <p className="text-ember">{t('closing')}</p>
+          </Fade>
         </div>
-
-        <Fade>
-          <p>{t('l2')}</p>
-        </Fade>
-        <Fade>
-          <p>{t('l3')}</p>
-        </Fade>
-
-        <div className="my-2">
-          <Banner time={t('wTime')} title={t('wTitle')} body={t('wBody')} />
-        </div>
-
-        <Fade>
-          <p className="text-ember">{t('closing')}</p>
-        </Fade>
       </div>
     </section>
   );

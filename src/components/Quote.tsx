@@ -23,19 +23,21 @@ export default function Quote() {
 
   return (
     <section ref={ref} className="relative overflow-hidden px-6 py-40 sm:py-56">
-      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-        <StaticRing
-          states={buildStates(21, 21)}
-          size={620}
-          stroke={10}
-          gap={5}
-          pulse={false}
-          className="animate-rotate-slow opacity-[0.13]"
-        />
+      <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden">
+        <div className="h-[min(150vw,620px)] w-[min(150vw,620px)] shrink-0">
+          <StaticRing
+            states={buildStates(21, 21)}
+            size={620}
+            stroke={10}
+            gap={5}
+            pulse={false}
+            className="h-full w-full animate-rotate-slow opacity-[0.13]"
+          />
+        </div>
       </div>
       <motion.p
         style={{ scale, opacity, y }}
-        className="relative mx-auto max-w-4xl text-center font-display text-4xl font-semibold leading-[1.15] tracking-[-0.02em] sm:text-6xl"
+        className="relative mx-auto max-w-4xl text-center font-display text-[clamp(30px,6.5vw,60px)] font-semibold leading-[1.15] tracking-[-0.02em]"
       >
         {t('line')}
       </motion.p>

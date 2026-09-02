@@ -21,7 +21,7 @@ function Line({ ember = false, children }: { ember?: boolean; children: ReactNod
     <motion.p
       ref={ref}
       style={{ opacity, y }}
-      className={`font-display text-4xl font-semibold leading-[1.12] tracking-[-0.02em] sm:text-6xl ${
+      className={`font-display text-[clamp(30px,7vw,60px)] font-semibold leading-[1.12] tracking-[-0.02em] ${
         ember ? 'text-ember' : ''
       }`}
     >

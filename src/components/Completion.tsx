@@ -79,7 +79,7 @@ export default function Completion() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-80px' }}
         transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
-        className="mt-10 font-display text-4xl font-semibold leading-[1.1] tracking-[-0.02em] sm:text-6xl"
+        className="mt-10 font-display text-[clamp(30px,7vw,60px)] font-semibold leading-[1.1] tracking-[-0.02em]"
       >
         {t('title')}
       </motion.h2>

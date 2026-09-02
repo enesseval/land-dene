@@ -14,13 +14,13 @@ export default function FinalCta() {
 
   return (
     <section id="download" className="relative overflow-hidden px-6 py-40 text-center sm:py-52">
-      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+      <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden">
         <motion.div
           initial={{ scale: 0.82, rotate: -24, opacity: 0 }}
           whileInView={{ scale: 1, rotate: 0, opacity: 1 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ type: 'spring', bounce: 0.2, duration: 1.1 }}
-          className="scale-[0.6] sm:scale-90 lg:scale-100"
+          className="h-[min(120vw,460px)] w-[min(120vw,460px)] shrink-0"
         >
           <StaticRing
             states={buildStates(14, 14)}
@@ -28,7 +28,7 @@ export default function FinalCta() {
             stroke={16}
             gap={3}
             pulse={false}
-            className="opacity-90 drop-shadow-[0_0_80px_rgba(255,107,71,0.22)]"
+            className="h-full w-full opacity-90 drop-shadow-[0_0_80px_rgba(255,107,71,0.22)]"
           />
         </motion.div>
       </div>
@@ -39,7 +39,7 @@ export default function FinalCta() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
-          className="font-display text-5xl font-semibold leading-[1.08] tracking-[-0.02em] sm:text-7xl"
+          className="font-display text-[clamp(38px,9vw,72px)] font-semibold leading-[1.08] tracking-[-0.02em]"
         >
           {t('title')}
         </motion.h2>
