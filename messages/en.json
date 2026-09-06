@@ -198,6 +198,96 @@
   "quote": {
     "line": "Yesterday didn't happen. You're here today."
   },
+  "v2": {
+    "meta": {
+      "title": "Halkora — A promise, a ring, your friends",
+      "description": "One tap a day to check in and watch the ring fill. Stakes, jokers, waves — the simplest way to keep your word with friends."
+    },
+    "hero": {
+      "eyebrow": "halkora",
+      "titleA": "Make a promise.",
+      "titleB": "You're not alone.",
+      "titleAccent": "The ring holds you.",
+      "sub": "Set a shared goal with friends. One tap a day to check in — the ring fills, your crew sees it instantly.",
+      "primaryCta": "Download on the App Store",
+      "meta": "Free · No accounts · No ads",
+      "dayLabel": "Day"
+    },
+    "manifesto": {
+      "kicker": "halkora principles",
+      "l1": "No notification floods.",
+      "l2": "No badge collections.",
+      "l3": "No confetti.",
+      "l4": "Just you, your crew, and a filling ring."
+    },
+    "features": {
+      "title": "Six things. That's all.",
+      "sub": "Halkora does few things — but it does them completely.",
+      "checkin": {
+        "title": "Check-in",
+        "copy": "One tap a day. The day's segment fills, your crew sees it instantly."
+      },
+      "stake": {
+        "title": "Stake",
+        "copy": "The group places a small bet. The loser buys coffee — friendly, unforgettable."
+      },
+      "joker": {
+        "title": "Joker",
+        "copy": "Life happens. A missed day burns amber, the ring doesn't break."
+      },
+      "wave": {
+        "title": "Wave",
+        "copy": "Tell the quiet one “we're here” with a single tap. No nagging."
+      },
+      "social": {
+        "title": "Visibility",
+        "copy": "Who's where, at a glance. Today and pending are always clear."
+      },
+      "chat": {
+        "title": "Chat",
+        "copy": "A simple day-by-day thread for the same ring. No noise."
+      },
+      "note": "No shaming. No judging. Just visibility."
+    },
+    "evening": {
+      "chip": "A real evening",
+      "rTime": "8:30 PM",
+      "rTitle": "Your ring is waiting.",
+      "rBody": "Today's check-in is still on you.",
+      "line": "Phone in hand, eyelids getting heavy. Right as you're about to give in —",
+      "wTime": "10:14 PM",
+      "wTitle": "👋 Ela waved at you",
+      "wBody": "30-Day Book Challenge",
+      "closing": "Three minutes later, the book is in your hand. One more segment fills."
+    },
+    "widgets": {
+      "chip": "New",
+      "title": "Now on your home screen.",
+      "sub": "See your ring without opening the app, check in with one tap.",
+      "checkin": "Check in",
+      "smallName": "6:30 AM Club",
+      "mediumName": "30-Day Book Challenge",
+      "mediumAction": "Today: read 20 pages",
+      "mediumJoker": "1 joker left",
+      "sLabel": "Small · 2×2",
+      "mLabel": "Medium · 4×2",
+      "lLabel": "Lock screen",
+      "note": "A completed widget goes quiet — no confetti; the filled ring is the reward."
+    },
+    "done": {
+      "chip": "Fourteen days later",
+      "title": "14 days. Together.",
+      "sub": "Book Club Challenge completed",
+      "s1": "people",
+      "s2": "check-ins",
+      "s3": "completed",
+      "perfect": "11 flawless days",
+      "perfectCopy": "Days when everyone checked in",
+      "closing": "Alone, it would've ended on day three. In the ring, it went all fourteen.",
+      "cta": "Start your first ring",
+      "note": "Free to download · No accounts · Takes 30 seconds"
+    }
+  },
   "cta": {
     "title": "Are you in?",
     "sub": "Starting your first ring takes 30 seconds.",

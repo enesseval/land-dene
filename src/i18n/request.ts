@@ -8,8 +8,13 @@ export default getRequestConfig(async ({ requestLocale }) => {
     ? requested
     : routing.defaultLocale;
 
+  const base = (await import(`../../messages/${locale}.json`)).default;
+  // Languages beyond tr/en don't ship v2 copy yet — fall back to Turkish
+  // for the v2 namespace so every route stays renderable.
+  const fallback = (await import('../../messages/tr.json')).default;
+
   return {
     locale,
-    messages: (await import(`../../messages/${locale}.json`)).default,
+    messages: { ...fallback, ...base },
   };
 });
